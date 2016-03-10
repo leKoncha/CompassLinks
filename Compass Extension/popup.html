@@ -1,240 +1,62 @@
 <!DOCTYPE html>
 <html>
 <!-- Written by Benjamin Ellsworth for Urban Compass-->
+
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="Function.js"></script>
-  <script src="jQuery.hoverForMore.js"></script>
-
-
-  <style type="text/css">
-
-  p, body, div, a, dl, dt, dd, ol, ul, li, button{
-        margin: 0;
-        padding: 0;
-        border: 0;
-        font-size: 100%;
-        font: inherit;
-        vertical-align: baseline;
-        border-style: none;
-        text-decoration: none;
-    }
-    .alink {
-        width: 175px;
-        display: block;
-        height: 20;
-        background-color: #262626;
-        color: white;
-        transition: .5s;
-        text-decoration: none;
-        font-family: sans-serif;
-        font-weight: lighter;
-        letter-spacing: 2px;
-        padding-top: 1px;
-        border: none;
-    }
-    .alink:focus {
-        outline: none;
-        border: none;
-    }
-    .alink:hover {
-        background-color: dimgrey;
-        text-decoration: none;
-        border: none;
-    }
-    .alink:active {
-        background-color: lightgrey;
-        color: dimgrey
-    }
-    .blink {
-        width: 160px;
-        display: inline-block;
-        height: 20;
-        background: transparent;
-        color: white;
-        transition: .5s;
-        text-decoration: none;
-        font-family: sans-serif;
-        font-weight: lighter;
-        letter-spacing: 2px;
-        padding-top: 1px;
-        border: none;
-        text-align: left;
-        padding-left: 5px;
-        min-width: 125px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    button.remove {
-        float: right;
-        background: transparent;
-        display: block;
-        width: 10px;
-        color: white;
-        padding-right: 5px;
-        height: 15px;
-        display: inline-block;
-    }
-    .remove:focus,
-    .remove:active {
-        border: none;
-        text-decoration: none;
-        outline: none;
-    }
-    .blink:focus {
-        outline: none;
-        border: none;
-        text-decoration: none;
-        border: none;
-    }
-    .blink:hover{
-        text-decoration: none;
-        border: none;
-    }
-    .blink:active {
-        color: dimgrey
-    }
-    li.new {
-        font-size: 75%;
-        height: 100px;
-        width: 150px;
-        padding-left: 0px;
-        width: 175px;
-        display: block;
-        height: 20;
-        background-color: #262626;
-        color: white;
-        transition: .5s;
-        text-decoration: none;
-        font-family: sans-serif;
-        font-weight: lighter;
-        letter-spacing: 2px;
-        border: none;
-        text-align: left;
-        height: 16px;
-    }
-    li.new:hover{
-        background-color: dimgrey;
-        text-decoration: none;
-        border: none;
-    }
-    li.new:active{
-      background-color: white;
-    }
-
-    li.small {
-        font-size: 75%;
-        height: 16px;
-        width: 150px;
-        padding-left: 0px;
-    }
-    ul {
-        text-align: center
-    }
-    div.break {
-        width: 160px;
-        height: 1px;
-        background-color: transparent;
-        box-shadow: 0 0 5px 0px white;
-        margin: auto;
-    }
-    body.main {
-        background-color: #262626;
-        width: 175px;
-    }
-    /* for expanding */
-    
-    #listContainer {
-        margin-top: 5px;
-    }
-    #expList ul,
-    li {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        cursor: pointer;
-    }
-    #expList p {
-        margin: 0;
-        display: block;
-    }
-    #expList p:hover {} #expList li {
-        line-height: 140%;
-        text-indent: 0px;
-        background-position: 1px 8px;
-        padding-left: 0px;
-        background-repeat: no-repeat;
-    }
-    /* Collapsed state for list element */
-    
-    #expList .collapsed {
-        display: block;
-        background-color: #262626;
-        color: white;
-        font-family: sans-serif;
-        font-weight: lighter;
-        letter-spacing: 2px;
-        transition: .5s;
-    }
-    #expList .collapsed:hover {
-        background-color: dimgrey
-    }
-    /* Expanded state for list element*/
-    /* NOTE: This class must be located UNDER the collapsed one */
-    
-    #expList .expanded {}
-
-
-
-
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="Function.js"></script>
+    <link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
-<body class="main">
-<img class="title" src="compass_white.png" style="height:20px;padding-bottom:5px; padding-left: 12px; padding-top: 5px">
-<div class="break"></div>
-<div id="listContainer">
-  <ul id="expList">
-    <li class="link">Compass Links
-      <ul>
-          <li class="small"><a class="alink" name="launch" href="http://Compass.com">Compass.com</a></li>
-          <li class="small"><a class="alink" name="launch" href="http://navigate.compass.com/hc/en-us" >Navigate</a></li>
-          <li class="small"><a class="alink" name="launch" href="http://honey.is/home/">Honey</a></li>
-        </li>
-      </ul>
-    </li>
-    <li class="link">Google Apps
-      <ul>
-          <li class="small"><a class="alink" name="launch" href="http://gmail.com">Email</a></li>
-          <li class="small"><a class="alink" name="launch" href="http://www.google.com/calendar/">Calendar</a></li> 
-          <li class="small"><a class="alink" name="launch" href="http://drive.google.com/drive/u/0/my-drive">Drive</a></li>
-          <li class="small"><a class="alink" name="launch" href="https://mail.google.com/mail/u/0/#contacts">Contacts</a></li>
-          <li class="small"><a class="alink" name="launch" href="https://hangouts.google.com/">Hangouts</a></li>
-      </ul>
-    </li>
-    <li class="link">Marketing
-      <ul>
-        <li class="small"><a class="alink" name="launch" href="http://www.xpressdocs.com/">XpressDocs</a></li>
-        <li class="small"><a class="alink" name="launch" href="https://login.mailchimp.com/?_ga=1.239115211.991669328.1455289118">Mail Chimp</a></li>
-      </ul>
-    </li>
-    <li class="link">Saved Listings
-      <ul id="fillable">
-        <li class="small"><button class="alink" id="add">Save Current</button></li>
-        <li class="test" >
 
-        </li>
-      </ul>
-      
-    </li>
-  </ul>
-</div>
+<body class="main">
+    <img class="title" src="compass_white.png" style="height:20px;padding-bottom:5px; padding-left: 12px; padding-top: 5px">
+    <div class="break"></div>
+    <div id="listContainer">
+        <ul id="expList">
+            <li class="link">Compass Links
+                <ul>
+                <div class="abreak"></div>
+                    <li class="small"><a class="alink" href="http://Compass.com">Compass.com</a></li>
+                    <li class="small"><a class="alink" href="http://navigate.compass.com/hc/en-us">Navigate</a></li>
+                    <li class="small"><a class="alink" href="http://honey.is/home/">Honey</a></li>
+                    <li class="small"><a class="alink" href="http://navigate.compass.com/hc/en-us/requests/new">Get Support</a></li>
+            </li>
+            </ul>
+            </li>
+            <li class="link">Google Apps
+                <ul>
+                <div class="abreak"></div>
+                    <li class="small"><a class="alink" href="http://gmail.com">Email</a></li>
+                    <li class="small"><a class="alink" href="http://www.google.com/calendar/">Calendar</a></li>
+                    <li class="small"><a class="alink" href="http://drive.google.com/drive/u/0/my-drive">Drive</a></li>
+                    <li class="small"><a class="alink" href="https://mail.google.com/mail/u/0/#contacts">Contacts</a></li>
+                    <li class="small"><a class="alink" href="https://hangouts.google.com/">Hangouts</a></li>
+                </ul>
+            </li>
+            <li class="link">Marketing
+                <ul>
+                <div class="abreak"></div>
+                    <li class="small"><a class="alink" href="http://www.xpressdocs.com/">XpressDocs</a></li>
+                    <li class="small"><a class="alink" href="https://login.mailchimp.com/?_ga=1.239115211.991669328.1455289118">MailChimp</a></li>
+                    <li class="small"><a class="alink" href="https://www.moo.com/m4b/account/login">Moo</a></li>
+                </ul>
+            </li>
+            <li class="link">Leasing
+                <ul>
+                <div class="abreak"></div>
+                    <li class="small"><a class="alink" href="https://www.on-site.com/">On Site</a></li>
+                    <li class="small"><a class="alink" href="https://workforcenow.adp.com/public/index.htm">ADP</a></li>
+                </ul>
+            </li>
+            <li class="link">Saved Listing
+                <ul id="fillable">
+                    <li class="new"><button class="blink" id="add" style="text-align: center">Save Current</button></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
 
 </body>
+
 </html>
-
-
-
-
-
-

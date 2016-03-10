@@ -1,16 +1,4 @@
-$(document).ready(function() {
-    prepareList();
-    fillSaved();
-    loadLinks();
-});
-
-
 document.addEventListener('DOMContentLoaded', function() {
-    var addButton = document.getElementById("add");
-    addButton.onclick = function() {
-        acquireAddress();
-    };
-
     var links = document.getElementsByTagName("a");
     for (var i = 0; i < links.length; i++) {
         (function() {
@@ -24,59 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         })();
     }
-    var removes = document.getElementsByClassName("remove");
-    for(var j = 0; j < removes.length; j++){
-      var removeButton = removes[i];
-      removeBotton.onclick = function(){
-        removeFromList();
-      };
-    }
+    var addButton = document.getElementById("add");
+    addButton.onclick = function() {
+        ButtonFunction();
+
+    };
 });
 
-function fillSaved() {
-    loadLinks();
-    var address = links;
-    var addressUrl = ['http://www.google.com', 'http://WWW.COMPASS.COM', 'http://www.gmail.com', 'http:www.bettercloud.com'];
-    var ul = document.getElementById("fillable");
-    for (var i = 0; i < address.length; i++) {
-        var RBT = document.createElement("button");
-        RBT.appendChild(document.createTextNode("X"));
-        RBT.setAttribute("class", "remove");
-        RBT.setAttribute("id", address[i]);
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode(address[i]));
-        a.setAttribute("id", address[i]);
-        a.setAttribute("class", "blink");
-        a.setAttribute("href", addressUrl[i]);
-        var li = document.createElement("li");
-        li.appendChild(a);
-        li.setAttribute("class", "new");
-        li.setAttribute("id", address[i]);
-        li.appendChild(RBT);
-        ul.insertBefore(li, ul.firstChild);
-    }
-}
 
-function acquireAddress() {
-    var update = chrome.storage.syn.get("links");
-    var currentUrl = chrome.tabs.query({
-        active: true
-    }, function(arrayOfTabs) {
-        var activeTab = arrayOfTabs[0];
-        var activeTabUrl = activeTab.url;
-        return activeTabUrl;
 
-        /*chrome.tabs.create({
-            active: true,
-            url: activeTabUrl
-
-        });*/
-
-    });
-    update.push(activeTabUrl);
-    chrome.storage.sync.set("links", update);
-
-}
 
 function prepareList() {
     $('#expList').find('li:has(ul)')
@@ -91,22 +35,73 @@ function prepareList() {
         .children('ul').hide();
 }
 
-function removeFromList(){
-  prompt(test);
+$(document).ready(function() {
+    prepareList();
+    //loadLists();
+    fillSaved();
+
+});
+var addressList = ['sadlkfjhaslkdjfhlaskjdfhlaskjdfhlkasjdfh', '2', '3', '4'];
+var urlList = ['1', '2', '3', '4'];
+
+function fillSaved() {
+    var addresses = addressList;
+    var Urls = urlList;
+    var ul = document.getElementById("fillable");
+    for (var i = 0; i < addresses.length; i++) {
+        var RBT = document.createElement("button");
+        RBT.appendChild(document.createTextNode("X"));
+        RBT.setAttribute("class", "remove");
+        RBT.setAttribute("id", addresses[i]);
+        var a = document.createElement("a");
+        a.appendChild(document.createTextNode(addresses[i]));
+        a.setAttribute("id", addresses[i]);
+        a.setAttribute("class", "blink");
+        a.setAttribute("href", Urls[i]);
+        var li = document.createElement("li");
+        li.appendChild(a);
+        li.setAttribute("class", "new");
+        li.setAttribute("id", addresses[i]);
+        li.appendChild(RBT);
+        ul.insertBefore(li, ul.firstChild);
+
+    }
+    var div = document.createElement('Div');
+    div.setAttribute("class","abreak");
+    ul.insertBefore(div, ul.firstChild);
 }
 
-function loadLiks(){
-  var links = [];
-  var Get = chrome.storage.sync.get("links");
-  if (!Get) {
-    chrome.stoarage.sync.set("links", links);
-  }
-  links = get;
-  return links;
 
+/*
+function ButtonFunction() {
 
 }
 
+function saveGroups() {
+    chrome.storage.local.set({
+        'addressList': addressList
+    });
+    chrome.storage.local.set({
+        'urlList': addressList
+    });
+}
 
-
-
+function loadLists() {
+    try {
+        chrome.storage.local.get('addressList', function(result) {
+            var addressList = result;
+            return addressList;
+        });
+    } catch (e) {
+        console.log(e);
+    }
+    try {
+        chrome.storage.local.get('urlList', function(result) {
+            var urlList = result;
+            return urlList;
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+*/
