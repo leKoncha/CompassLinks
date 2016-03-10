@@ -1,0 +1,185 @@
+p, body, div, a, dl, dt, dd, ol, ul, li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    border-style: none;
+    text-decoration: none;
+}
+.alink {
+    border: none;
+    width: 175px;
+    display: block;
+    height: 20;
+    background-color: #262626;
+    color: white;
+    transition: .5s;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    padding-top: 1px;
+}
+.alink:focus {
+    outline: none;
+}
+.alink:hover,
+.alink:active {
+    background-color: dimgrey;
+    text-decoration: none;
+}
+.remove{
+    width: 15px;
+    float: right;
+    border: none;
+    display: inline-block;
+    height: 20;
+    background-color: transparent;
+    color: white;
+    transition: .5s;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    padding-top: 1px;
+    padding-right:4px;
+
+}
+.remove:active, .remove:focus, .remove:hover{
+    border: none;
+    outline: none;
+}
+.blink{
+    text-align:left;
+    float: left;
+    border: none;
+    display: block;
+    background-color: transparent;
+    color: white;
+    transition: .5s;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    padding-top: 1px;
+    padding-left: 5px;
+    margin:none;
+    width:154px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+}
+
+li.new {
+    align: left;
+    border: none;
+    font-size: 75%;
+    height: 16px;
+    width: 175px;
+    padding-left: 0px;
+    height: 20;
+    background-color: #262626;
+    color: white;
+    transition: .5s;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    padding-top: 1px;
+
+}
+.new:hover{
+    background-color: dimgrey;
+    text-decoration: none;
+}
+.add{
+    align: left;
+    border: none;
+    font-size: 75%;
+    height: 16px;
+    width: 175px;
+    padding-left: 0px;
+    height: 20;
+    background-color: #262626;
+    color: white;
+    transition: .5s;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    padding-top: 1px;
+
+}
+
+li.small {
+    font-size: 75%;
+    height: 16px;
+    width: 150px;
+    padding-left: 0px;
+}
+ul {
+    text-align: center
+}
+div.break {
+    width: 160px;
+    height: 1px;
+    background-color: transparent;
+    box-shadow: 0 0 5px 0px white;
+    margin: auto;
+}
+div.abreak {
+    width: 100px;
+    height: 1px;
+    background-color: transparent;
+    box-shadow: 0 0 5px 0px #B2B2B2;
+    margin: auto;
+}
+body.main {
+    background-color: #262626;
+    width: 175px;
+}
+/* for expanding */
+
+#listContainer {
+    margin-top: 5px;
+}
+#expList ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+#expList p {
+    margin: 0;
+    display: block;
+}
+#expList p:hover {} #expList li {
+    line-height: 140%;
+    text-indent: 0px;
+    background-position: 1px 8px;
+    padding-left: 0px;
+    background-repeat: no-repeat;
+}
+/* Collapsed state for list element */
+
+#expList .collapsed {
+    display: block;
+    background-color: #262626;
+    color: white;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    transition: .5s;
+}
+#expList .collapsed:hover {
+    background-color: dimgrey
+}
+/* Expanded state for list element
+/* NOTE: This class must be located UNDER the collapsed one */
+
+#expList .expanded {
+    
+}
