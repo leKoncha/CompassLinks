@@ -102,10 +102,11 @@ function fillSaved() {
 }
 
 function addListing () {
-  var createUrl = chrome.tabs.query({active: true, lastFocusedWindow: true}, function(arrayOfTabs) {
+  var createUrl;
+  chrome.tabs.query({active: true, lastFocusedWindow: true}, function(arrayOfTabs) {
      var activeTab = arrayOfTabs[0];
-     activeTabUrl = activeTab.url;
-     return activeTab.url; 
+     var activeTabUrl = activeTab.url;
+     createUrl = activeTabUrl; 
    });
   chrome.tabs.create({url:createUrl,active:false});
   console.log(createUrl);
