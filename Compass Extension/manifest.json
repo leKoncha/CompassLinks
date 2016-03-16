@@ -8,7 +8,8 @@
           "128": "icon lrg.png" },
 
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "browser_action": {
       "default_title": "Compass Links",
