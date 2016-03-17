@@ -57,41 +57,29 @@ $(document).ready(function() {
 
 });
 var addressList = 
-//chrome.storage.sync.get('addressList',function(result){
-  //return result;
-//});
 ['sadlkfjhaslkdjfhlaskjdfhlaskjdfhlkasjdfh', '2', '3', '4'];
 var urlList = 
-//chrome.storage.sync.get('urlList',function(result){
-  //return result;
-//});
 ['1', '2', '3', '4'];
 
 function fillSaved() {
-    var addresses = addressList;
-    var Urls = urlList;
+  chrome.storage.sync.get("Listings",function(listings){
     var ul = document.getElementById("fillable");
-    if(addresses === undefined){
-      chrome.storage.sync.set({"addressList":[]});
-      chrome.storage.sync.set({"urlList":[]});
-      addresses = addressList;
-      Urls = urlList;
-    }
-
-    for (var i = 0; i < addresses.length; i++) {
+    for (var i = 0; i < listings.length; i++) {
+        var listingAddress = listings[i].address;
+        var listingUrl = listings[i].url;
         var RBT = document.createElement("button");
         RBT.appendChild(document.createTextNode("X"));
         RBT.setAttribute("class", "remove");
         RBT.setAttribute("id", i);
         var a = document.createElement("a");
-        a.appendChild(document.createTextNode(addresses[i]));
-        a.setAttribute("id", addresses[i]);
+        a.appendChild(document.createTextNode(listingAddress));
+        a.setAttribute("id", listingAddress);
         a.setAttribute("class", "blink");
-        a.setAttribute("href", Urls[i]);
+        a.setAttribute("href", listingUrl);
         var li = document.createElement("li");
         li.appendChild(a);
         li.setAttribute("class", "new");
-        li.setAttribute("id", addresses[i]);
+        li.setAttribute("id", listingAddress);
         li.appendChild(RBT);
         ul.insertBefore(li, ul.firstChild);
 
@@ -99,18 +87,36 @@ function fillSaved() {
     var div = document.createElement('Div');
     div.setAttribute("class","abreak");
     ul.insertBefore(div, ul.firstChild);
-}
+});}
 
 function addListing () {
-  var createUrl;
-  chrome.tabs.query({active: true, lastFocusedWindow: true}, function(arrayOfTabs) {
-     var activeTab = arrayOfTabs[0];
-     var activeTabUrl = activeTab.url;
-     createUrl = activeTabUrl; 
-   });
-  chrome.tabs.create({url:createUrl,active:false});
-  console.log(createUrl);
-
+    try {
+      chrome.storage.sync.get("listings",function(listings){
+        chrome.tabs.query({
+          active: true,
+          }, 
+          function(arrayOfTabs) {
+          var listingList = [];
+          listingList.concat(listings);
+          var activeTab = arrayOfTabs[0];
+          var activeTabUrl = activeTab.url;
+          var activeTabTitle = activeTab.title.split(',')[0];
+          listingList.push({"address": activeTabTitle,"url":activeTabUrl});
+          chrome.storage.sync.set({"listings": listingList});
+          console.log(activeTabUrl,activeTabTitle);
+        });
+    });}catch(err){
+        chrome.tabs.query({
+          active: true,
+          }, 
+          function(arrayOfTabs) {
+          var activeTab = arrayOfTabs[0];
+          var activeTabUrl = activeTab.url;
+          var activeTabTitle = activeTab.title.split(',')[0];
+          var listings = [{"address":activeTabTitle,"url":activeTabUrl}];
+          chrome.sync.set({'listings':listings});
+        });
+      }
 }
 
 function removeFunction(index) {
