@@ -12,8 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         })();
     }
-    
+
 });
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var removes = document.getElementsByClassName("remove");
@@ -21,18 +23,22 @@ document.addEventListener('DOMContentLoaded', function() {
         (function() {
             var button = removes[i];
             var idNumber = button.id;
-            button.onclick = function (){ removeFunction(idNumber);
+            button.onclick = function() {
+                removeFunction(idNumber);
             };
         })();
     }
-    
+
 });
+
+
 document.addEventListener('DOMContentLoaded', function() {
     var addButton = document.getElementById("add");
-    addButton.onclick = function() {addListing();
+    addButton.onclick = function() {
+        addListing();
 
     };
-    
+
 });
 
 
@@ -52,106 +58,85 @@ function prepareList() {
 
 $(document).ready(function() {
     prepareList();
-    //loadLists();
     fillSaved();
-
 });
-var addressList = 
-['sadlkfjhaslkdjfhlaskjdfhlaskjdfhlkasjdfh', '2', '3', '4'];
-var urlList = 
-['1', '2', '3', '4'];
 
 function fillSaved() {
-  chrome.storage.sync.get("Listings",function(listings){
-    var ul = document.getElementById("fillable");
-    for (var i = 0; i < listings.length; i++) {
-        var listingAddress = listings[i].address;
-        var listingUrl = listings[i].url;
-        var RBT = document.createElement("button");
-        RBT.appendChild(document.createTextNode("X"));
-        RBT.setAttribute("class", "remove");
-        RBT.setAttribute("id", i);
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode(listingAddress));
-        a.setAttribute("id", listingAddress);
-        a.setAttribute("class", "blink");
-        a.setAttribute("href", listingUrl);
-        var li = document.createElement("li");
-        li.appendChild(a);
-        li.setAttribute("class", "new");
-        li.setAttribute("id", listingAddress);
-        li.appendChild(RBT);
-        ul.insertBefore(li, ul.firstChild);
-
-    }
-    var div = document.createElement('Div');
-    div.setAttribute("class","abreak");
-    ul.insertBefore(div, ul.firstChild);
-});}
-
-function addListing () {
-    try {
-      chrome.storage.sync.get("listings",function(listings){
-        chrome.tabs.query({
-          active: true,
-          }, 
-          function(arrayOfTabs) {
-          var listingList = [];
-          listingList.concat(listings);
-          var activeTab = arrayOfTabs[0];
-          var activeTabUrl = activeTab.url;
-          var activeTabTitle = activeTab.title.split(',')[0];
-          listingList.push({"address": activeTabTitle,"url":activeTabUrl});
-          chrome.storage.sync.set({"listings": listingList});
-          console.log(activeTabUrl,activeTabTitle);
-        });
-    });}catch(err){
-        chrome.tabs.query({
-          active: true,
-          }, 
-          function(arrayOfTabs) {
-          var activeTab = arrayOfTabs[0];
-          var activeTabUrl = activeTab.url;
-          var activeTabTitle = activeTab.title.split(',')[0];
-          var listings = [{"address":activeTabTitle,"url":activeTabUrl}];
-          chrome.sync.set({'listings':listings});
-        });
-      }
-}
-
-function removeFunction(index) {
-  var number = index;
-  console.log(number);
-  //addresses.splice(number, 1);
-  //Urls.splice(number,1);
-
-}
-/*
-function saveGroups() {
-    chrome.storage.local.set({
-        'addressList': addressList
-    });
-    chrome.storage.local.set({
-        'urlList': addressList
+    var listingsList = [];
+    chrome.storage.sync.get("listings", function(listings) {
+        listingsList = listings.listings;
+        var ul = document.getElementById("fillable");
+        for (var i = 0; i < listingsList.length; i++) {
+            var listingAddress = listingsList[i].address;
+            var listingUrl = listingsList[i].url;
+            var RBT = document.createElement("button");
+            RBT.appendChild(document.createTextNode("X"));
+            RBT.setAttribute("class", "remove");
+            RBT.setAttribute("id", i);
+            var index = RBT.id;
+            RBT.onclick = function() {
+              chrome.storage.sync.get('listings', function(listings){
+              var removeFrom = Array.from(listings.listings);
+              removeFrom.splice(index,1);
+              chrome.storage.sync.set({'listings':removeFrom});
+              console.log(index);
+              });
+            };
+            var a = document.createElement("a");
+            a.appendChild(document.createTextNode(listingAddress));
+            a.setAttribute("id", listingAddress);
+            a.setAttribute("class", "blink");
+            a.setAttribute("href", listingUrl);
+            a.onclick = function(){
+              chrome.tabs.create({
+                    active: true,
+                    url: listingUrl
+                });
+            };
+            var li = document.createElement("li");
+            li.appendChild(a);
+            li.setAttribute("class", "new");
+            li.setAttribute("id", listingAddress);
+            li.appendChild(RBT);
+            ul.insertBefore(li, ul.firstChild);
+        }
+        var div = document.createElement('Div');
+        div.setAttribute("class", "abreak");
+        ul.insertBefore(div, ul.firstChild);
     });
 }
 
-function loadLists() {
-    try {
-        chrome.storage.local.get('addressList', function(result) {
-            var addressList = result;
-            return addressList;
+function addListing() {
+    var listingsList = [];
+    var newListing;
+    chrome.storage.sync.get("listings", function(listings) {
+        listingsList = Array.from(listings.listings);
+    });
+    chrome.tabs.query({
+            active: true,
+        },
+        function(arrayOfTabs) {
+            var activeTab = arrayOfTabs[0];
+            var activeTabUrl = activeTab.url;
+            var activeTabTitle = activeTab.title.split(',')[0];
+            newListing = {
+                "address": activeTabTitle,
+                "url": activeTabUrl
+            };
+            listingsList.push(newListing);
+            chrome.storage.sync.set({
+                "listings": listingsList
+            });
+
         });
-    } catch (e) {
-        console.log(e);
-    }
-    try {
-        chrome.storage.local.get('urlList', function(result) {
-            var urlList = result;
-            return urlList;
-        });
-    } catch (e) {
-        console.log(e);
-    }
 }
-*/
+
+function removeFunction(index){
+  chrome.storage.sync.get('listings', function(listings){
+    var removeFrom = Array.from(listings.listings);
+    removeFrom.splice(index,1);
+    chrome.storage.sync.set({'listings':removeFrom});
+    console.log(index);
+    });
+  }
+

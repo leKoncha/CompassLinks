@@ -45,6 +45,7 @@ p, body, div, a, dl, dt, dd, ol, ul, li {
     letter-spacing: 2px;
     padding-top: 1px;
     padding-right:4px;
+    height: 15px;
 
 }
 .remove:active, .remove:focus, .remove:hover{
@@ -69,6 +70,9 @@ p, body, div, a, dl, dt, dd, ol, ul, li {
     width:154px;
     text-overflow: ellipsis;
     overflow: hidden;
+    word-break: break-all;
+    max-height: 16px;
+    white-space: nowrap;
 
 }
 
@@ -94,15 +98,9 @@ li.new {
     background-color: dimgrey;
     text-decoration: none;
 }
-.add{
-    align: left;
-    border: none;
-    font-size: 75%;
-    height: 16px;
-    width: 175px;
-    padding-left: 0px;
-    height: 20;
-    background-color: #262626;
+#add{
+    display: block;
+    background-color: transparent;
     color: white;
     transition: .5s;
     text-decoration: none;
@@ -110,6 +108,17 @@ li.new {
     font-weight: lighter;
     letter-spacing: 2px;
     padding-top: 1px;
+    padding-left: 5px;
+    margin:none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+    max-height: 16px;
+    white-space: nowrap;
+    text-align: center; 
+    width:175px; 
+    border: none;
+    outline: none;
 }
 
 li.small {
