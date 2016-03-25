@@ -5,32 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
             var ln = links[i];
             var location = ln.href;
             ln.onclick = function() {
-                chrome.tabs.create({
-                    active: true,
-                    url: location
-                });
+                createTab(location);
             };
         })();
     }
-
 });
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    var removes = document.getElementsByClassName("remove");
-    for (var i = 0; i < removes.length; i++) {
-        (function() {
-            var button = removes[i];
-            var idNumber = button.id;
-            button.onclick = function() {
-                removeFunction(idNumber);
-            };
-        })();
-    }
-
-});
-
 
 document.addEventListener('DOMContentLoaded', function() {
     var addButton = document.getElementById("add");
@@ -38,10 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
         addListing();
 
     };
-
 });
 
-
+$(document).ready(function() {
+    prepareList();
+    fillSaved();
+});
 
 function prepareList() {
     $('#expList').find('li:has(ul)')
@@ -56,53 +37,20 @@ function prepareList() {
         .children('ul').hide();
 }
 
-$(document).ready(function() {
-    prepareList();
-    fillSaved();
-});
-
 function fillSaved() {
     var listingsList = [];
     chrome.storage.sync.get("listings", function(listings) {
-        listingsList = listings.listings;
+        listingsList = Array.from(listings.listings);
         var ul = document.getElementById("fillable");
-        for (var i = 0; i < listingsList.length; i++) {
-            var listingAddress = listingsList[i].address;
-            var listingUrl = listingsList[i].url;
-            var RBT = document.createElement("button");
-            RBT.appendChild(document.createTextNode("X"));
-            RBT.setAttribute("class", "remove");
-            RBT.setAttribute("id", i);
-            var index = RBT.id;
-            RBT.onclick = function() {
-              chrome.storage.sync.get('listings', function(listings){
-              var removeFrom = Array.from(listings.listings);
-              removeFrom.splice(index,1);
-              chrome.storage.sync.set({'listings':removeFrom});
-              console.log(index);
-              });
-            };
-            var a = document.createElement("a");
-            a.appendChild(document.createTextNode(listingAddress));
-            a.setAttribute("id", listingAddress);
-            a.setAttribute("class", "blink");
-            a.setAttribute("href", listingUrl);
-            a.onclick = function(){
-              chrome.tabs.create({
-                    active: true,
-                    url: listingUrl
-                });
-            };
-            var li = document.createElement("li");
-            li.appendChild(a);
-            li.setAttribute("class", "new");
-            li.setAttribute("id", listingAddress);
-            li.appendChild(RBT);
-            ul.insertBefore(li, ul.firstChild);
-        }
         var div = document.createElement('Div');
         div.setAttribute("class", "abreak");
         ul.insertBefore(div, ul.firstChild);
+        for (var i = 0; i < listingsList.length; i++) {
+            console.log(listingsList.url, listingsList.address, i);
+            generateLi(listingsList[i].url, listingsList[i].address, i);
+        }
+
+
     });
 }
 
@@ -123,20 +71,56 @@ function addListing() {
                 "address": activeTabTitle,
                 "url": activeTabUrl
             };
+            var idNumber = listingsList.length;
             listingsList.push(newListing);
             chrome.storage.sync.set({
                 "listings": listingsList
             });
+            generateLi(activeTabUrl, activeTabTitle, idNumber);
 
         });
 }
 
-function removeFunction(index){
-  chrome.storage.sync.get('listings', function(listings){
-    var removeFrom = Array.from(listings.listings);
-    removeFrom.splice(index,1);
-    chrome.storage.sync.set({'listings':removeFrom});
-    console.log(index);
-    });
-  }
+function generateLi(url, address, index) {
+    var ul = document.getElementById("fillable");
+    var listingAddress = address;
+    var listingUrl = url;
+    var RBT = document.createElement("button");
+    RBT.appendChild(document.createTextNode("X"));
+    RBT.setAttribute("class", "remove");
+    RBT.setAttribute("id", index);
+    RBT.onclick = function() {
+        var index = this.id;
+        chrome.storage.sync.get('listings', function(listings) {
+            var removeFrom = Array.from(listings.listings);
+            removeFrom.splice(index, 1);
+            chrome.storage.sync.set({
+                'listings': removeFrom
+            });
+            var toRemove = document.getElementById(index);
+            ul.removeChild(toRemove);
+        });
+    };
+    var a = document.createElement("a");
+    a.appendChild(document.createTextNode(listingAddress));
+    a.setAttribute("id", listingAddress);
+    a.setAttribute("class", "blink");
+    a.setAttribute("href", listingUrl);
+    a.onclick = function() {
+        createTab(listingUrl);
+    };
+    var li = document.createElement("li");
+    li.appendChild(a);
+    li.setAttribute("class", "new");
+    li.setAttribute("id", index);
+    li.appendChild(RBT);
+    ul.insertBefore(li, (ul.firstChild).nextSibling);
+}
 
+function createTab(tab) {
+    var tabUrl = tab;
+    chrome.tabs.create({
+        active: true,
+        url: tabUrl
+    });
+}
